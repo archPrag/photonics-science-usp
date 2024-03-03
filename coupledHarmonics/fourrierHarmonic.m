@@ -9,11 +9,11 @@ couplingR=0.5;
 mass=1;
 
 %time constant
-tau=2*pi/couplingR/gamma
+tau=2*pi/couplingR/gamma;
 
 %simulating parameters(in seconds)
 dt=0.00001;
-plotted=5000000;
+plotted=10;
 final=0.16*tau;
 
 
@@ -27,26 +27,22 @@ phase(2,1)=0;
 phase(3,1)=0;
 phase(4,1)=0;
 matrix=[0 1 0 0;-omega^2 -gamma couplingR*omega*gamma 0;0 0 0 1;couplingR*omega*gamma 0 -omega^2 -gamma];
-itteration=(dt*matrix+eye(4))^plotted
+itteration=(dt*matrix+eye(4))^plotted;
 for index=2:(size(t,2))
   phase(:,index)=itteration*phase(:,index-1);
 end
 
 
-  %energy:
-energy=zeros(2,size(t,2));
-energy(1,:)=mass*(phase(2,:).^2)./2+mass*omega^2*phase(1,:).^2/2;
-energy(2,:)=mass*(phase(4,:).^2)./2+mass*omega^2*phase(3,:).^2/2;
-regularFall=energy(1,1)*exp(-gamma*t);
-plot(t/tau,regularFall)
+%frequency power
+fourrier1=fftshift(fft(phase(1,:)))*plotted*dt/2/pi;
+fourrier2=fftshift(fft(phase(3,:)))*plotted*dt/2/pi;
+omegaVar=2*pi*t/size(t,2)/(plotted*dt)^2;
+omegaVar=omegaVar-omegaVar(1,end)/2;
+power1=omega^2*gamma*abs(fourrier1).^2;
+power2=omega^2*gamma*abs(fourrier2).^2;
+plot(omegaVar,power1+power2)
+xlim([0.99 1.01])
 
-title('energy as a function of time')
-hold on
-
-plot(t/tau,energy(1,:))
-plot(t/tau,energy(2,:))
-
-hold off
 
 
 

@@ -42,9 +42,9 @@ end
 fourrier1=fftshift(fft(phase(1,:)));
 fourrier2=fftshift(fft(phase(3,:)));
 %normalization
+modulous=abs(fourrier1*fourrier1')*dOmega;
 fourrier1=fourrier1/sqrt(abs(fourrier1*fourrier1')*dOmega);
 fourrier2=fourrier2/sqrt(abs(fourrier2*fourrier2')*dOmega);
-modulous=abs(fourrier1*fourrier1')*dOmega;
 
 %power:
 omegaVar=omegaVar-omegaVar(1,end)/2;

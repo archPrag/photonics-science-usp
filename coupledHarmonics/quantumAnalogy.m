@@ -4,7 +4,7 @@ dDelta=0.03;
 deltaReal=-1:dDelta:1;
 deltaImaginary=-1:dDelta:1;
 omega=zeros(size(deltaReal,2),size(deltaImaginary,2));
-g=.5;
+g=-.5;
 
 for line=1:size(deltaReal,2)
   for row=1:size(deltaImaginary,2)
@@ -13,7 +13,12 @@ for line=1:size(deltaReal,2)
 
 end
 
-surf(deltaReal,deltaImaginary,real(omega))
+surf(deltaReal,deltaImaginary,real(omega)/2/g)
+hold on
+
+surf(deltaReal,deltaImaginary,-real(omega)/2/g)
+
+hold off
 
 %I will aproximate omega to omega~ \pm delta/2*(4th(2/2) degree padéAproximand)
 function root=movedSqrt(argument)
